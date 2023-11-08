@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap" rel="stylesheet"> 
+    <link rel="shortcut icon" href="static/IMG/favicon.ico" type="image/x-icon">
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    <header>
+        <div class="header_wrapper">
+            <div class="logo"><p>На луне</p></div>
+            <div class="menu_btn" onclick="showMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </header>
+    <section class="sidebar_column">
+        <div>
+            <h2>На луне</h2>
+            <p>Портал, на котором вы узнаете что такое ардуино, и как оно может автоматизировать некоторые аспекты нашей жизни.</p>
+            <hr>
+            <nav>
+                <a href="/">Главная</a>
+                <a href="/course-1/">Курс 1</a>
+                <a href="/course-2/">Курс 2</a>
+                <a href="/course-3/">Курс 3</a>
+                <a href="/gallery/">Галерея</a>
+            </nav>
+            <div class="hr" style="margin: 10px 0 15px 0; background-color: white;"></div>
+            <a href="https://t.me/">Обратная связь</a>
+        </div>
+    </section>
+
+    <section class="main_content">
+        {% if index_content %}
+        <div class="wrapper-center-flexbox">
+            <div class="wrapper-center">
+                <h1>{{ index_content[0] }}</h1>
+                <p>{{ index_content[1] }}</p>
+            </div>
+        {% endif %}
+
+        {% if list %}
+        <div class="lessons_list_wrapper">
+            <h1>{{ content_title }}</h1>
+            <div class="hr"></div>
+            {% for item in list %}
+            <div class="item">
+                <a href="lesson-{{ item[1] }}">{{ item[2] }}</a>
+                <div class="read_time">Время чтения ~{{ item[3]}}мин</div>
+                <p>{{ item[4] }}</p>
+                <div class="hr"></div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% endif %}
+
+        {% if lesson_page %}
+        <div class="lesson_wrapper">
+            <h1>{{ content_title }}</h1>
+            <div class="hr"></div>
+            <div style="margin: 0 0 15px 0"></div>
+        {% for item in lesson_page %}
+
+            {% if item[3] %}
+            <p>{{ item[3] }}</p>
+            {% endif %}
+
+            <div class="picture">
+            {% if item[4] %}
+                <img src="/static/IMG/{{ item[4] }}">
+            {% endif %}
+            </div>
+
+            {% if item[5] %}
+            <div class="code"><pre>{{ item[5] }}</pre></div>
+            {% endif %}
+
+        {% endfor %}
+            <div class="iframe">
+                <iframe width="100%" height="100%" src="{{ lesson_page[0][2] }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        {% if last_lesson == 1 %}
+            <a href="/course-{{ lesson_page[0][0]+1 }}/lesson-1" class="next_lesson">Следующий курс --></a>
+        {% else %}
+            <a href="/course-{{ lesson_page[0][0] }}/lesson-{{ lesson_page[0][1]+1 }}" class="next_lesson">Следующий урок --></a>
+        {% endif %}
+        </div>
+
+        {% endif %}
+
+        {% if gallery_arr %}
+        <div class="gallery">
+            {% for picture in gallery_arr %}
+             <a href="/static/IMG/{{ picture[0] }}"><img class="low_size" src="/static/IMG/{{ picture[0] }}" onclick="changeSize(elem)" alt=""></a>
+            {% endfor %}
+        </div>
+        {% endif %}
+        </div>
+    </section>
+</body>
+<script src="{{ url_for('static', filename='JS/script.js') }}"></script>
+</html>
+
